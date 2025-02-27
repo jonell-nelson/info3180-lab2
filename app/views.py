@@ -1,4 +1,5 @@
 from app import app
+from datetime import datetime
 from flask import render_template, request, redirect, url_for, flash
 
 
@@ -11,11 +12,29 @@ def home():
     """Render website's home page."""
     return render_template('home.html')
 
-
 @app.route('/about/')
 def about():
     """Render the website's about page."""
     return render_template('about.html', name="Mary Jane")
+
+###
+# The profile view function using the format_date_joined function
+### 
+@app.route("/profile")
+def profile():
+
+    profile_data = {
+        'full_name' : 'Jonell Nelson',
+        'username' : 'jonellnelson1',
+        'location' : 'Kingston, Jamaica',
+        'bio': 'I love coding and building cool projects!',
+        'posts': 20,
+        'followers': 1000,
+        'following': 50,
+        'date_joined': datetime(2022, 9, 7)
+    }    
+
+    return render_template('profile.html', **profile_data)
 
 
 ###
@@ -39,6 +58,9 @@ def add_header(response):
     response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
     response.headers['Cache-Control'] = 'public, max-age=0'
     return response
+
+def format_date_joined(date):
+    return date.strftime('%B, %Y')
 
 
 @app.errorhandler(404)
